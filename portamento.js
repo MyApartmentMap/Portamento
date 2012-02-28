@@ -36,12 +36,6 @@
 (function($){
   	
 	$.fn.portamento = function(options) {
-		
-		// we'll use the window and document objects a lot, so
-		// saving them as variables now saves a lot of function calls
-		var thisWindow = $(window);
-		var thisDocument = $(document);
-						
 		/**
 		 * NOTE by Kris - included here so as to avoid namespace clashes.
 		 * 
@@ -191,15 +185,15 @@
 						
 		// ---------------------------------------------------------------------------------------------------
 		
-		thisWindow.bind("scroll.portamento", function () {
+		$(window).bind("scroll.portamento", function () {
 			
-			if(thisWindow.height() > panel.outerHeight() && thisWindow.width() >= (thisDocument.width() - ieFix)) { // don't scroll if the window isn't big enough
+			if($(window).height() > panel.outerHeight() && $(window).width() >= ($(document).width() - ieFix)) { // don't scroll if the window isn't big enough
 				
-				var y = thisDocument.scrollTop(); // current scroll position of the document
+				var y = $(document).scrollTop(); // current scroll position of the document
 												
 				if (y >= (topScrollBoundary)) { // if we're at or past the upper scrolling boundary
 					if((panel.innerHeight() - wrapper.viewportOffset().top) - wrapperPaddingFix + gap >= wrapper.height()) { // if we're at or past the bottom scrolling boundary
-						if(panel.hasClass('fixed') || thisWindow.height() >= panel.outerHeight()) { // check that there's work to do
+						if(panel.hasClass('fixed') || $(window).height() >= panel.outerHeight()) { // check that there's work to do
 							panel.removeClass('fixed');
 							panel.css('top', (wrapper.height() - panel.innerHeight()) + 'px');
 						}
@@ -225,29 +219,29 @@
 		
 		// ---------------------------------------------------------------------------------------------------
 		
-		thisWindow.bind("resize.portamento", function () {						
+		$(window).bind("resize.portamento", function () {						
 			// stop users getting undesirable behaviour if they resize the window too small
-			if(thisWindow.height() <= panel.outerHeight() || thisWindow.width() < thisDocument.width()) {			
+			if($(window).height() <= panel.outerHeight() || $(window).width() < $(document).width()) {			
 				if(panel.hasClass('fixed')) {
 					panel.removeClass('fixed');
 					panel.css('top', '0');
 				}				
 			} else {
-				thisWindow.trigger('scroll.portamento'); // trigger the scroll event to place the panel correctly
+				$(window).trigger('scroll.portamento'); // trigger the scroll event to place the panel correctly
 			}
 		});
 		
 		// ---------------------------------------------------------------------------------------------------
 		
-		thisWindow.bind("orientationchange.portamento", function () {
+		$(window).bind("orientationchange.portamento", function () {
 			// if device orientation changes, trigger the resize event
-			thisWindow.trigger('resize.portamento'); 
+			$(window).trigger('resize.portamento'); 
 		});
 		
 		// ---------------------------------------------------------------------------------------------------
 		
 		// trigger the scroll event immediately so that the panel is positioned correctly if the page loads anywhere other than the top.
-		thisWindow.trigger('scroll.portamento');
+		$(window).trigger('scroll.portamento');
 		
 	    // return this to maintain chainability
 	    return this;	
